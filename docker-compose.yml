@@ -1,0 +1,52 @@
+version: '3.7'
+services:
+  rails:
+    depends_on:
+    - mysql_writer
+    - mysql_reader
+    build:
+      context: .
+      dockerfile: ./docker/rails/Dockerfile
+    stdin_open: true
+    tty: true
+    volumes:
+    - .:/app:cached
+    - bundle:/usr/local/bundle
+    ports:
+    - '3333:3333'
+    #command: /bin/bash
+    command: bash -c "bundle exec rails s -p 3333 -b '0.0.0.0'"
+  mysql_writer:
+    image: mysql:8.0.16
+    container_name: mysql_writer
+    environment:
+      MYSQL_ALLOW_EMPTY_PASSWORD: 1
+      MYSQL_DATABASE: test_db
+      TZ: 'Asia/Tokyo'
+    command: mysqld
+    volumes:
+    - ./docker/mysql_writer/data:/var/lib/mysql
+    - ./docker/mysql_writer/log:/var/log/mysql
+    - ./docker/mysql_writer/my.cnf:/etc/mysql/conf.d/my.cnf
+    ports:
+    - 3334:3334
+  mysql_reader:
+    depends_on:
+    - mysql_writer
+    image: mysql:8.0.16
+    container_name: mysql_reader
+    environment:
+      MYSQL_ALLOW_EMPTY_PASSWORD: 1
+      MYSQL_DATABASE: test_db
+      TZ: 'Asia/Tokyo'
+    command: mysqld
+    volumes:
+      - ./docker/mysql_reader/data:/var/lib/mysql
+      - ./docker/mysql_reader/log:/var/log/mysql
+      - ./docker/mysql_reader/my.cnf:/etc/mysql/conf.d/my.cnf
+      - ./docker/mysql_reader/initdb.d/start-slave.sh:/docker-entrypoint-initdb.d/start-slave.sh
+    ports:
+      - 3335:3335
+volumes:
+  bundle:
+    driver: local
