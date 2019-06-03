@@ -10,7 +10,7 @@ $ mkdir docker/mysql_{reader,writer}/{data,log}
 $ docker-compose up
 
 # Setup database (if necessary)
-$ docker-compose exec rake db:setup
+$ docker-compose exec rails rake db:setup
 
 # Open https://127.0.0.1:3333
 ```
