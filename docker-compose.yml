@@ -14,7 +14,6 @@ services:
     - bundle:/usr/local/bundle
     ports:
     - '3333:3333'
-    #command: /bin/bash
     command: bash -c "bundle exec rails s -p 3333 -b '0.0.0.0'"
   mysql_writer:
     image: mysql:8.0.16
