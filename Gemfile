@@ -8,6 +8,7 @@ gem 'rails', '~> 5.2.3'
 
 gem 'mysql2'
 gem 'puma', '~> 3.11'
+gem 'switch_point'
 
 group :development, :test do
   gem 'byebug', require: false
