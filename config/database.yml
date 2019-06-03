@@ -15,12 +15,17 @@ default: &default
   pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
   username: root
   password:
-  host: mysql_writer
-  port: 3334
 
 development:
   <<: *default
   database: app_development
+  host: mysql_writer
+  port: 3334
+development_reader:
+  <<: *default
+  database: app_development
+  host: mysql_reader
+  port: 3335
 
 # Warning: The database defined as "test" will be erased and
 # re-generated from your development database when you run "rake".
@@ -28,6 +33,13 @@ development:
 test:
   <<: *default
   database: app_test
+  host: mysql_writer
+  port: 3334
+test_reader:
+  <<: *default
+  database: app_test
+  host: mysql_reader
+  port: 3335
 
 # As with config/secrets.yml, you never want to store sensitive information,
 # like your database password, in your source code. If your source code is
@@ -48,8 +60,17 @@ test:
 #   production:
 #     url: <%= ENV['DATABASE_URL'] %>
 #
-production:
-  <<: *default
-  database: app_production
-  username: app
-  password: <%= ENV['APP_DATABASE_PASSWORD'] %>
+#production:
+#  <<: *default
+#  database: app_production
+#  username: app
+#  password: <%= ENV['APP_DATABASE_PASSWORD'] %>
+#  host: mysql_writer
+#  port: 3334
+#production_reader:
+#  <<: *default
+#  database: app_production
+#  username: app
+#  password: <%= ENV['APP_DATABASE_PASSWORD'] %>
+#  host: mysql_writer
+#  port: 3335

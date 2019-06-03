@@ -23,25 +23,31 @@ class UsersController < ApplicationController
   def create
     @user = User.new(user_params)
 
-    if @user.save
-      redirect_to @user, notice: 'User was successfully created.'
-    else
-      render :new
+    User.with_writable do
+      if @user.save
+        redirect_to @user, notice: 'User was successfully created.'
+      else
+        render :new
+      end
     end
   end
 
   # PATCH/PUT /users/1
   def update
-    if @user.update(user_params)
-      redirect_to @user, notice: 'User was successfully updated.'
-    else
-      render :edit
+    User.with_writable do
+      if @user.update(user_params)
+        redirect_to @user, notice: 'User was successfully updated.'
+      else
+        render :edit
+      end
     end
   end
 
   # DELETE /users/1
   def destroy
-    @user.destroy
+    User.with_writable do
+      @user.destroy
+    end
     redirect_to users_url, notice: 'User was successfully destroyed.'
   end
 
