@@ -7,7 +7,7 @@ ruby '2.6.3'
 gem 'rails', '~> 5.2.3'
 
 gem 'mysql2'
-gem 'puma', '~> 3.11'
+gem 'puma', '~> 3.12'
 gem 'switch_point'
 
 group :development, :test do
